@@ -15,3 +15,9 @@ CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ,
 CHANGE COLUMN `token` `token` VARCHAR(64) NOT NULL ,
 CHANGE COLUMN `user_id` `user_id` VARCHAR(20) NOT NULL ,
 ADD PRIMARY KEY (`id`);
+create table userDetails (user_id varchar(20), phone varchar(15), address varchar(50), dateOfBirth date, profilePic varchar(50));
+ALTER TABLE `dbms_project`.`userDetails` 
+CHANGE COLUMN `user_id` `user_id` VARCHAR(20) NOT NULL ,
+ADD PRIMARY KEY (`user_id`),
+ADD UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
+ADD UNIQUE INDEX `phone_UNIQUE` (`phone` ASC);

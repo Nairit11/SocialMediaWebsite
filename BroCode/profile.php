@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<?php
+include('./classes/DB.php');
+include('./classes/Login.php');
+if (Login::isLoggedIn()) {
+        
+} else {
+        die('Not logged in');
+}
+?>
+
 <html>
 <head>
 <title>Profile Page</title>
@@ -19,27 +28,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link rel="stylesheet" href="css/easy-responsive-tabs.css">
 <link href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i&amp;subset=latin-ext" rel="stylesheet">
 <script src="js/easy-responsive-tabs.js"></script>
-	<script>
-		$(document).ready(function () {
-			$('#horizontalTab').easyResponsiveTabs({
-				type: 'default', //Types: default, vertical, accordion           
-				width: 'auto', //auto or any width like 600px
-				fit: true,   // 100% fit in a container
-				closed: 'accordion', // Start closed if in accordion view
-				activate: function(event) { // Callback function if tab is switched
-				var $tab = $(this);
-				var $info = $('#tabInfo');
-				var $name = $('span', $info);
-				$name.text($tab.text());
-				$info.show();
-				}
-			});
-		});
-	</script>
 </head>
 <body>
 	<div class="main">
-		<h1>WELCOME TO OUR WEBSITE</h1>
+		<h1>WELCOME TO BRO CODE</h1>
 		<div class="w3_main_grids">
 			<div class="w3layouts_profile_grid1">
 				<div class="w3l_profile_grid1_padd">
@@ -50,9 +42,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							</span>
 							<!-- menu -->
 								<ul class="w3_agile_nav1">
-									<li><a href="#">Log In</a></li>
-									<li><a href="#">Sign Up</a></li>
-									<li><a href="#">Settings</a></li>
+									<li><a href="changePassword.php">Change Password</a></li>
+									<li><a href="update.php">Update Details</a></li>
+									<li><a href="logout.php">Log Out</a></li>
 								</ul> 	
 								<!-- script-for-menu -->
 								 <script>
@@ -68,9 +60,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="w3ls_menu_grid">
 							<h2>Full Name</h2>
 						</div>
-						<div class="w3ls_menu_grid">
-							<i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-						</div>
+					
 						<div class="clear"> </div>
 					</div>
 				</div>
@@ -94,8 +84,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<ul class="resp-tabs-list">
 						<li>Friends</li>
 						<li>Posts</li>
-						<li>Photos</li>
-						<li>Contact Me</li>
+						<li>Friend Requests</li>
+						<li>Contact Details</li>
 					</ul>
 					<div class="resp-tabs-container">
 						<div class="agileinfo_tab1">
@@ -173,6 +163,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 		</div>		
 	</div>
+	<script>
+		$(document).ready(function () {
+			$('#horizontalTab').easyResponsiveTabs({
+				type: 'default', //Types: default, vertical, accordion           
+				width: 'auto', //auto or any width like 600px
+				fit: true,   // 100% fit in a container
+				closed: 'accordion', // Start closed if in accordion view
+				activate: function(event) { // Callback function if tab is switched
+				var $tab = $(this);
+				var $info = $('#tabInfo');
+				var $name = $('span', $info);
+				$name.text($tab.text());
+				$info.show();
+				}
+			});
+		});
+	</script>
 	
 </body>
 </html>
