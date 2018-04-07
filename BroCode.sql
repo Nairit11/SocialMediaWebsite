@@ -21,3 +21,20 @@ CHANGE COLUMN `user_id` `user_id` VARCHAR(20) NOT NULL ,
 ADD PRIMARY KEY (`user_id`),
 ADD UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
 ADD UNIQUE INDEX `phone_UNIQUE` (`phone` ASC);
+create table followers (id int, user_id varchar(20), follower_id varchar(20));
+ALTER TABLE `dbms_project`.`followers` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL ,
+CHANGE COLUMN `user_id` `user_id` VARCHAR(20) NOT NULL ,
+CHANGE COLUMN `follower_id` `follower_id` VARCHAR(20) NOT NULL ,
+ADD PRIMARY KEY (`id`);
+ALTER TABLE `dbms_project`.`followers` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ;
+create table posts (id int, text varchar(140), image varchar(100), posted_at datetime, user_id varchar(20), likes int);
+ALTER TABLE `dbms_project`.`posts` 
+CHANGE COLUMN `id` `id` INT(11) NOT NULL AUTO_INCREMENT ,
+CHANGE COLUMN `text` `text` VARCHAR(140) NULL ,
+CHANGE COLUMN `posted_at` `posted_at` DATETIME NOT NULL ,
+CHANGE COLUMN `user_id` `user_id` VARCHAR(20) NOT NULL ,
+CHANGE COLUMN `likes` `likes` INT(11) NOT NULL ,
+ADD PRIMARY KEY (`id`);
+select * from posts;
