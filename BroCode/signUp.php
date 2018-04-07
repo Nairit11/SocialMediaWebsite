@@ -11,7 +11,7 @@ if (isset($_POST['Login'])) {
                         $user_id = DB::query('SELECT user_id FROM user WHERE user_id=:username', array(':username'=>$username))[0]['user_id'];
                         DB::query('INSERT INTO login_table (token, user_id) VALUES ( :token, :user_id)', array(':token'=>sha1($token), ':user_id'=>$user_id));
                         setcookie("SNID", $token, time() + 60 * 60 * 24 * 7, '/', NULL, NULL, TRUE);
-			header('Location:profile.php');
+			header('Location: profile.php?username='.$user_id);
                 } else {
                         echo 'Incorrect Password!';
                 }

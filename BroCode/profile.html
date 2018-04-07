@@ -1,46 +1,4 @@
-<?php
-include('./classes/DB.php');
-include('./classes/Login.php');
-
-$username = "";
-$isFollowing = False;
-if (isset($_GET['username'])) {
-        if (DB::query('SELECT user_id FROM user WHERE user_id=:username', array(':username'=>$_GET['username']))) {
-                $username = DB::query('SELECT name FROM user WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['name'];
-                $userid = DB::query('SELECT user_id FROM user WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['user_id'];
-                $followerid = Login::isLoggedIn();
-                if (isset($_POST['follow'])) {
-                        if ($userid != $followerid) {
-                                if (!DB::query('SELECT follower_id FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid))) {
-                                        DB::query('INSERT INTO followers (user_id, follower_id) VALUES (:userid, :followerid)', array(':userid'=>$userid, ':followerid'=>$followerid));
-					
-                                } else {
-                                        echo 'Already following!';
-                                }
-                                $isFollowing = True;
-                        }
-                }
-                if (isset($_POST['unfollow'])) {
-                        if ($userid != $followerid) {
-                                if (DB::query('SELECT follower_id FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid))) {
-                                        DB::query('DELETE FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid));
-                                }
-                                $isFollowing = False;
-                        }
-                }
-                if (DB::query('SELECT follower_id FROM followers WHERE user_id=:userid', array(':userid'=>$userid))) {
-                        //echo 'Already following!';
-                        $isFollowing = True;
-                }
-	 	$dbposts = DB::query('SELECT * FROM posts WHERE user_id=:userid ORDER BY id DESC', array(':userid'=>$userid));
-                $posts = "";
-                
-        } else {
-                die('User not found!');
-        }
-}
-?>
-
+<!DOCTYPE html>
 <html>
 <head>
 <title>Profile Page</title>
@@ -91,7 +49,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<!-- //menu -->
 						</div>
 						<div class="w3ls_menu_grid">
-							<h2><?php echo $username; ?></h2>
+							<h2>Full Name</h2>
 						</div>
 					
 						<div class="clear"> </div>
@@ -103,51 +61,44 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<img src="images/1.png" alt=" " class="img-responsive" />
 				</div>
 				<div class="agile_profile_grid2_left">
-					<?php
-					if ($userid != $followerid) {
-					echo '<form action="profile.php?username='.$userid.'" method="post">';
-						
-        						
-                						if ($isFollowing) {
-                        						echo '<input type="submit" name="unfollow" value="Unfollow">';
-                						} else {
-                        						echo '<input type="submit" name="follow" value="Follow">';
-                						}
-        						
-        					
-					echo '</form>';
-					} else{
-						echo '<form action="post.php" method="post">';
-                        						echo '<input type="submit" name="Post" value="Post">';
-                				echo '</form>';
 					
-					}					
-					?>
+					<ul>
+						<li class="agileits_w3layouts_list"><a href="#">Add Friend</a></li>
+						<li class="w3_agileits_list"><a href="#">Unfriend</a></li>
+					</ul>
 				</div>
 				<div class="clear"> </div>
-				<p><?php echo $userid; ?> - <?php echo $username; ?></p>
+				<p>Username - Full name</p>
 			</div>
 			<div class="wthree_tabs">
 				<div id="horizontalTab">
 					<ul class="resp-tabs-list">
+						<li>Friends</li>
 						<li>Posts</li>
-						<li>Follwers</li>
+						<li>Photos</li>
 						<li>Contact Details</li>
 					</ul>
 					<div class="resp-tabs-container">
 						<div class="agileinfo_tab1">
 							<ul>
-								<?php
-
-								foreach($dbposts as $p) {
-                        						echo '<li><i class="fa fa-comments-o agileits_comment" aria-hidden="true"></i><span>'.htmlspecialchars($p['posted_at']).'</span>'.htmlspecialchars($p['text']).'<img src="images/2.jpg" alt=" " class="img-responsive w3ls_men" /><form action="profile.php?username=$username&postid='.$p['id'].'" method="post">
-                                					<input type="submit" name="like" value="Like">
-                        						</form>
-								</li>';
-									
-                						}
-								
-								?>
+								<li><i class="fa fa-gratipay" aria-hidden="true"></i><span>Mozaic Ali</span> mattis mollis nunc vel.</li>
+								<li><i class="fa fa-comments-o agileits_comment" aria-hidden="true"></i><span>Richard James</span> mattis mollis nunc vel.
+									<img src="images/2.jpg" alt=" " class="img-responsive w3ls_men" />
+								</li>
+								<li><i class="fa fa-gratipay" aria-hidden="true"></i><span>Michael Paul</span> mattis mollis nunc vel.
+									<div class="agileinfo_tab1_img_grids">
+										<div class="agileinfo_tab1_img_grid">
+											<img src="images/2.png" alt=" " class="img-responsive" />
+										</div>
+										<div class="agileinfo_tab1_img_grid">
+											<img src="images/4.png" alt=" " class="img-responsive" />
+										</div>
+										<div class="agileinfo_tab1_img_grid">
+											<img src="images/3.png" alt=" " class="img-responsive" />
+										</div>
+										<div class="clear"> </div>
+									</div>
+								</li>
 							</ul>
 						</div>
 						<div class="agileinfo_tab2">
@@ -171,7 +122,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								</div>
 							</div>
 						</div>
-						
+						<div class="agileinfo_tab3">
+							<div class="wthree_tab_grid">
+								<ol>
+									<li>mattis volutpat ante<span>Nulla eleifend nisi id quam interdum, id dictum urna viverra</span></li>
+									<li>dictum tincidunt sem sed<span>Nulla eleifend nisi id quam interdum, id dictum urna viverra</span></li>
+									<li>Praesent sem quam<span>Nulla eleifend nisi id quam interdum, id dictum urna viverra</span></li>
+									<li>amet dignissim felis<span>Nulla eleifend nisi id quam interdum, id dictum urna viverra</span></li>
+									<li>dictum urna viverra<span>Nulla eleifend nisi id quam interdum, id dictum urna viverra</span></li>
+								</ol>
+							</div>
+						</div>
 						<div class="agileinfo_tab3">
 							<div class="wthree_tab_grid">
 								<ul class="wthree_tab_grid_list">
