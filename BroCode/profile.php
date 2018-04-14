@@ -14,7 +14,8 @@ if (isset($_GET['username'])) {
                         if ($userid != $followerid) {
                                 if (!DB::query('SELECT follower_id FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid))) {
                                         DB::query('INSERT INTO followers (user_id, follower_id) VALUES (:userid, :followerid)', array(':userid'=>$userid, ':followerid'=>$followerid));
-					
+					DB::query('UPDATE userDetails SET following = following+1 WHERE user_id=:followerid', array(':followerid'=>$followerid));
+					DB::query('UPDATE userDetails SET followers = followers+1 WHERE user_id=:userid', array(':userid'=>$userid));
                                 } else {
                                         echo 'Already following!';
                                 }
@@ -25,6 +26,8 @@ if (isset($_GET['username'])) {
                         if ($userid != $followerid) {
                                 if (DB::query('SELECT follower_id FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid))) {
                                         DB::query('DELETE FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid));
+					DB::query('UPDATE userDetails SET following = following-1 WHERE user_id=:followerid', array(':followerid'=>$followerid));
+					DB::query('UPDATE userDetails SET followers = followers-1 WHERE user_id=:userid', array(':userid'=>$userid));
                                 }
                                 $isFollowing = False;
                         }
@@ -141,10 +144,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<?php
 
 								foreach($dbposts as $p) {
-                        						echo '<li><i class="fa fa-comments-o agileits_comment" aria-hidden="true"></i><span>'.htmlspecialchars($p['posted_at']).'</span>'.htmlspecialchars($p['text']).'<img src="images/2.jpg" alt=" " class="img-responsive w3ls_men" /><form action="profile.php?username=$username&postid='.$p['id'].'" method="post">
+                        						echo '<li><i class="fa fa-comments-o agileits_comment" aria-hidden="true"></i><span>'.htmlspecialchars($p['posted_at']).'</span>'.htmlspecialchars($p['text']).'<img src="images/2.jpg" alt=" " class="img-responsive w3ls_men" />';
+									if (DB::query('SELECT follower_id FROM followers WHERE user_id=:userid', array(':userid'=>$userid))){
+									echo '<form action="profile.php?username='.$username.'" method="post">
                                 					<input type="submit" name="like" value="Like">
-                        						</form>
-								</li>';
+                        						</form>';}
+								echo '</li>';
 									
                 						}
 								
@@ -153,19 +158,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						</div>
 						<div class="agileinfo_tab2">
 							<div class="wthree_tab_grid">
-								<p class="eget">turpis ultricies eget estibulum commodo justo non nibh tempor finibus</p>
-								<p class="eget1">Aliquam sodales dolor ac lorem vulputate, eu maximus velit semper. Sed erat lacus, ultrices in iaculis ac, laoreet quis felis</p>
+								
 								<div class="wthree_tab_grid_sub">
 									<div class="wthree_tab_grid_sub_left">
-										<h5>321</h5>
-										<p>Tweets</p>
-									</div>
-									<div class="wthree_tab_grid_sub_left">
-										<h5>213</h5>
+										<h5><?php echo DB::query('SELECT followers FROM userDetails WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['followers'];  ?></h5>
 										<p>Followers</p>
 									</div>
 									<div class="wthree_tab_grid_sub_left">
-										<h5>123</h5>
+										<h5><?php echo DB::query('SELECT following FROM userDetails WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['following'];  ?></h5>
 										<p>Following</p>
 									</div>
 									<div class="clear"> </div>
@@ -177,15 +177,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<div class="wthree_tab_grid">
 								<ul class="wthree_tab_grid_list">
 									<li><i class="fa fa-mobile" aria-hidden="true"></i></li>
-									<li>Mobile<span>+123 234 4342</span></li>
+									<li>Mobile<span><?php echo DB::query('SELECT phone FROM userDetails WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['phone'];  ?></span></li>
 								</ul>
 								<ul class="wthree_tab_grid_list">
 									<li><i class="fa fa-envelope-o" aria-hidden="true"></i></li>
-									<li>Mail Me<span><a href="mailto:info@example.com">info@example.com</a></span></li>
+									<li>Mail Me<span><a href="mailto:<?php echo DB::query('SELECT email_id FROM user WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['email_id'];  ?>"><?php echo DB::query('SELECT email_id FROM user WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['email_id'];  ?></a></span></li>
 								</ul>
 								<ul class="wthree_tab_grid_list">
 									<li><i class="fa fa-map-marker" aria-hidden="true"></i></li>
-									<li>Address<span>123 Avenue, Dollar Street, France.</span></li>
+									<li>Address<span><?php echo DB::query('SELECT address FROM userDetails WHERE user_id=:username', array(':username'=>$_GET['username']))[0]['address'];  ?></span></li>
 								</ul>
 							</div>
 						</div>
