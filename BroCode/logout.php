@@ -30,9 +30,22 @@ if (isset($_POST['confirm'])) {
 	echo "Logged out.";
 }
 ?>
-<h1>Logout of your Account?</h1>
-<p>Check the box to log out of all devices. Leave it unchecked it you wanna log out of only this device.</p>
-<form action="logout.php" method="post">
+<head>
+	<title>Logout|Brocode</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="shortcut icon" href="favicon.ico">
+	<link rel="stylesheet" type="text/css" href=css/style3.css">
+</head>
+<body>
+	<div class="container">
+		<div class="jumbotron" id="jumbo">
+			<h2>Logout of your Account?</h2>
+			<br>
+			<p>Check the box to log out of all devices. Leave it unchecked it you wanna log out of only this device.</p>
+			<form action="logout.php" method="post">
         <input type="checkbox" name="alldevices" value="alldevices"> Logout of all devices?<br />
         <input type="submit" name="confirm" value="Confirm">
 </form>
+		</div>
+	</div>
+</body>
