@@ -21,6 +21,12 @@ CHANGE COLUMN `user_id` `user_id` VARCHAR(20) NOT NULL ,
 ADD PRIMARY KEY (`user_id`),
 ADD UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
 ADD UNIQUE INDEX `phone_UNIQUE` (`phone` ASC);
+ALTER TABLE `dbms_project`.`userDetails` 
+ADD COLUMN `followers` INT NOT NULL AFTER `profilePic`,
+ADD COLUMN `following` INT NOT NULL AFTER `followers`;
+ALTER TABLE `dbms_project`.`userDetails` 
+CHANGE COLUMN `followers` `followers` INT(11) NOT NULL DEFAULT 0 ,
+CHANGE COLUMN `following` `following` INT(11) NOT NULL DEFAULT 0 ;
 create table followers (id int, user_id varchar(20), follower_id varchar(20));
 ALTER TABLE `dbms_project`.`followers` 
 CHANGE COLUMN `id` `id` INT(11) NOT NULL ,
