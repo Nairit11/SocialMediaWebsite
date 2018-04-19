@@ -38,7 +38,7 @@ if (isset($_GET['username'])) {
                 }
 	 	$dbposts = DB::query('SELECT * FROM posts WHERE user_id=:userid ORDER BY id DESC', array(':userid'=>$userid));
                 $posts = "";
-                
+			
         } else {
                 die('User not found!');
         }
@@ -112,7 +112,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					echo '<form action="profile.php?username='.$userid.'" method="post">';
 						
         						
-                						if ($isFollowing) {
+                						if (DB::query('SELECT follower_id FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid))) {
                         						echo '<input type="submit" name="unfollow" value="Unfollow">';
                 						} else {
                         						echo '<input type="submit" name="follow" value="Follow">';
@@ -144,11 +144,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<?php
 
 								foreach($dbposts as $p) {
-                        						echo '<li><i class="fa fa-comments-o agileits_comment" aria-hidden="true"></i><span>'.htmlspecialchars($p['posted_at']).'</span>'.htmlspecialchars($p['text']).'<img src="images/2.jpg" alt=" " class="img-responsive w3ls_men" />';
-									if (DB::query('SELECT follower_id FROM followers WHERE user_id=:userid', array(':userid'=>$userid))){
-									echo '<form action="profile.php?username='.$username.'" method="post">
-                                					<input type="submit" name="like" value="Like">
-                        						</form>';}
+									$postid=$p['id'];
+                        						echo '<li><i class="fa fa-comments-o agileits_comment" aria-hidden="true"></i><span>'.htmlspecialchars($p['posted_at']).'</span>'.htmlspecialchars($p['text']).'<img src="'.$p['image'].'" alt=" " class="img-responsive w3ls_men" />';
+									if (DB::query('SELECT follower_id FROM followers WHERE user_id=:userid AND follower_id=:followerid', array(':userid'=>$userid, ':followerid'=>$followerid))){
+									if(isset($_POST['like'.$postid])){
+			DB::query('UPDATE posts SET likes=likes+1 WHERE id=:postid', array(':postid'=>$postid));
+
+                }
+									echo '<form action="profile.php?username='.$userid.'" method="post">
+                                					<input type="submit" name="like'.$postid.'" value="Like">
+                        						</form>';
+									echo DB::query('SELECT likes FROM posts WHERE id=:postid', array(':postid'=>$postid))[0]['likes'].' likes';
+									}
+								
 								echo '</li>';
 									
                 						}
