@@ -7,13 +7,14 @@ if (Login::isLoggedIn()) {
                 $phone_no = $_POST['phone_no'];
                 $Address = $_POST['address'];
 		$dob = $_POST['dob'];
-		$dp = $_POST['dp'];
-		
+		$dp = $_POST['dp'];		
                 $userid = Login::isLoggedIn();
+		//header('Location: profile.php?username='.$userid);
                 if (password_verify($password, DB::query('SELECT password FROM user WHERE user_id=:userid', array(':userid'=>$userid))[0]['password'])) {
                         
                       DB::query('UPDATE userDetails SET phone=:phone_no, address=:Address, dateOfBirth=:dob, profilePic=:dp WHERE user_id=:userid', array(':userid'=>$userid, ':phone_no'=>$phone_no, ':Address'=>$Address, ':dob'=>$dob, ':dp'=>$dp));
                                         echo 'Updated details successfully!';
+					header('Location: profile.php?username='.$userid);
         	}
 		else{
 			echo 'Password Incorrect.';
@@ -41,13 +42,13 @@ else {
       <div class="signup__container">
       <div class="container__child signup__thumbnail">
         <div class="thumbnail__content text-center">
-          <!-- <h2 class="headingsecondary">Forgot your password?<br>Don't worry <br></h2> -->
+     
           <h1 class="heading--primary">Update Your Details</h1>
         </div>
         <div class="signup__overlay"></div>
       </div>
       <div class="container__child signup__form">
-        <form action="#">
+        <form action="update.php" method="post">
           <div class="form-group">
             <label for="username">Password</label>
             <input class="form-control" type="password" name="password" value="" placeholder="Password" required />
